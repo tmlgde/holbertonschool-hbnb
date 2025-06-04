@@ -1,0 +1,19 @@
+sequenceDiagram
+    participant Utilisateur
+    participant API (Presentation Layer)
+    participant ReviewManager (Business Logic Layer)
+    participant ReviewRepository (Persistence Layer)
+
+    Utilisateur->>API (Presentation Layer): POST /places/123/reviews (note, commentaire)
+    API (Presentation Layer)->>ReviewManager (Business Logic Layer): validateReview(data)
+    ReviewManager (Business Logic Layer)->>ReviewRepository (Persistence Layer): saveReview()
+
+    alt Autorisé à commenter
+        ReviewRepository-->>ReviewManager (Business Logic Layer): avis enregistré
+        ReviewManager-->>API (Presentation Layer): 201 Created
+        API (Presentation Layer)-->>Utilisateur: Avis publié
+    else Utilisateur non autorisé
+        ReviewManager-->>API (Presentation Layer): 403 Forbidden
+        API (Presentation Layer)-->>Utilisateur: Erreur : action interdite
+    end
+

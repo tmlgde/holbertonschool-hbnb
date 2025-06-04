@@ -1,0 +1,20 @@
+sequenceDiagram
+    participant Utilisateur
+    participant API (Presentation Layer)
+    participant PlaceManager (Business Logic Layer)
+    participant PlaceRepository (Persistence Layer)
+
+    Utilisateur->>API (Presentation Layer): GET /places?city=Paris&price<100
+    API (Presentation Layer)->>PlaceManager (Business Logic Layer): applyFilters()
+    PlaceManager (Business Logic Layer)->>PlaceRepository (Persistence Layer): fetchFilteredPlaces()
+
+    alt Résultats trouvés
+        PlaceRepository-->>PlaceManager (Business Logic Layer): liste de places
+        PlaceManager-->>API (Presentation Layer): 200 OK
+        API (Presentation Layer)-->>Utilisateur: JSON liste des places
+    else Aucun résultat
+        PlaceRepository-->>PlaceManager (Business Logic Layer): []
+        PlaceManager-->>API (Presentation Layer): 204 No Content
+        API (Presentation Layer)-->>Utilisateur: Aucun logement trouvé
+    end
+
