@@ -43,90 +43,66 @@ class PersistenceLayer {
 
 PresentationLayer --> BusinessLogicLayer : Facade Pattern
 BusinessLogicLayer --> PersistenceLayer : Database Operations
+```
 
-##Explication
+---
 
-1. Presentation Layer (Interface Utilisateur)
+## Explication Diagramme de packages UML
+
+### 1. Presentation Layer (Interface Utilisateur)
 C'est la couche qui interagit avec l'utilisateur final. Elle s'appuie sur les services suivants :
 
-Services disponibles :
-UserService
-Gère toutes les informations relatives aux utilisateurs.
-Fonctions principales :
+#### Services disponibles :
+- UserService gère toutes les informations relatives aux utilisateurs.
 
-register_user : Enregistrer un nouvel utilisateur
+#### Fonctions principales :
+- register_user : Enregistrer un nouvel utilisateur
+- login_user : Connexion d'un utilisateur
+- update_user : Mettre à jour le profil utilisateur
+- delete_user : Supprimer un utilisateur
 
-login_user : Connexion d'un utilisateur
+- PlaceService Gère toutes les données relatives aux logements.
 
-update_user : Mettre à jour le profil utilisateur
+#### Fonctions principales :
+- create_place : Créer une annonce de logement
+- update_place : Modifier les détails d’un logement
+- delete_place : Supprimer un logement
+- list_place : Lister tous les logements disponibles
 
-delete_user : Supprimer un utilisateur
+- ReviewService Gère les avis laissés par les utilisateurs.
+#### Fonctions principales :
 
-PlaceService
-Gère toutes les données relatives aux logements.
-Fonctions principales :
+- create_review : Laisser un avis
+- update_review : Modifier un avis
+- delete_review : Supprimer un avis
+- list_review : Lister tous les avis
 
-create_place : Créer une annonce de logement
+- AmenityService gère les équipements proposés dans les logements.
+#### Fonctions principales :
+- add_amenity : Ajouter un équipement
+- update_amenity : Modifier un équipement
+- delete_amenity : Supprimer un équipement
+- list_amenity : Lister tous les équipements disponibles
 
-update_place : Modifier les détails d’un logement
-
-delete_place : Supprimer un logement
-
-list_place : Lister tous les logements disponibles
-
-ReviewService
-Gère les avis laissés par les utilisateurs.
-Fonctions principales :
-
-create_review : Laisser un avis
-
-update_review : Modifier un avis
-
-delete_review : Supprimer un avis
-
-list_review : Lister tous les avis
-
-AmenityService
-Gère les équipements proposés dans les logements.
-Fonctions principales :
-
-add_amenity : Ajouter un équipement
-
-update_amenity : Modifier un équipement
-
-delete_amenity : Supprimer un équipement
-
-list_amenity : Lister tous les équipements disponibles
-
-2. Business Logic Layer (Logique Métier)
+### 2. Business Logic Layer (Logique Métier)
 Cette couche contient la logique principale de l'application.
 
 HBnBFacade
 Classe centrale qui coordonne les appels aux services.
 Exemples de méthodes :
-
-create_place(PlaceDTO)
-
-register_user(UserDTO)
+- create_place(PlaceDTO)
+- register_user(UserDTO)
 
 Entités principales :
+- User : représente un utilisateur (nom, prénom, e-mail, mot de passe, rôle admin ou non...)
+- Place : représente un logement (titre, description, prix, emplacement...)
+- Review : représente un avis (note, commentaire, auteur, lieu, date...)
+- Amenity : représente un équipement (nom, description)
 
-User : représente un utilisateur (nom, prénom, e-mail, mot de passe, rôle admin ou non...)
-
-Place : représente un logement (titre, description, prix, emplacement...)
-
-Review : représente un avis (note, commentaire, auteur, lieu, date...)
-
-Amenity : représente un équipement (nom, description)
-
-3. Persistence Layer (Accès Base de Données)
+### 3. Persistence Layer (Accès Base de Données)
 Couche qui assure la communication avec la base de données.
-
-UserRepository : Gère la persistance des utilisateurs
-
-PlaceRepository : Gère la persistance des logements
-
-ReviewRepository : Gère la persistance des avis
-
-AmenityRepository : Gère la persistance des équipements
+- UserRepository : Gère la persistance des utilisateurs
+- PlaceRepository : Gère la persistance des logements
+- ReviewRepository : Gère la persistance des avis
+- AmenityRepository : Gère la persistance des équipements
 
