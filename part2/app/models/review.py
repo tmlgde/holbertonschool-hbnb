@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-from app.models.basemodel import BaseModel
+from app.models.base_model import BaseModel
 from app.models.user import User
 
 
