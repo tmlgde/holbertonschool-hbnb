@@ -2,6 +2,7 @@
 from app.persistence.repository import InMemoryRepository
 from app.models.user import User
 from app.models.amenity import Amenity
+from app.models.place import Place
 
 class HBnBFacade:
 
@@ -68,41 +69,31 @@ class HBnBFacade:
         owner = self.user_repo.get(owner_id)
         if not owner:
             raise ValueError("Invalid owner_id: User not found")
+
+    # Validation du prix
         price = place_data.get("price")
+        if price is None or not isinstance(price, (int, float)) or price < 0:
+            raise ValueError("Invalid price: Must be a non-negative number")
+
+    # Validation de la latitude
         latitude = place_data.get("latitude")
+        if latitude is None or not isinstance(latitude, (int, float)) or not (-90 <= latitude <= 90):
+            raise ValueError("Invalid latitude: Must be between -90 and 90")
+
+    # Validation de la longitude
         longitude = place_data.get("longitude")
-        if latitude is None or not isinstance(latitude(int, float)) or not (-90 <= latitude >= 90):
-            raise ValueError("Latitude must be between -90 and 90")
-        if price is None or not isinstance(price(int, float)) or price < 0:
-            raise ValueError("Invalid price")
-        if longitude is None or not isinstance(longitude(int, float)) or note (-180 <= longitude >= 180):
-            raise ValueError("Longitude must be between -180 and 180")
-            amenity_ids = place_data.get("amenities")
-    if not isinstance(amenity_ids, list):
-        raise ValueError("Amenities must be a list of IDs")
+        if longitude is None or not isinstance(longitude, (int, float)) or not (-180 <= longitude <= 180):
+            raise ValueError("Invalid longitude: Must be between -180 and 180")
 
-    amenities = []
-    for amenity_id in amenity_ids:
-        amenity = self.amenity_repo.get(amenity_id)
-        if amenity is None:
-            raise ValueError(f"Amenity with ID {amenity_id} not found")
-        amenities.append(amenity)
+    # PAS de pop() ici, car owner_id est requis dans le constructeur
+        place = Place(**place_data)
+        place.owner = owner  # Si tu as une propriété .owner à part
 
-    place = Place(
-        title=title,
-        description=description,
-        price=price,
-        latitude=latitude,
-        longitude=longitude,
-        owner_id=owner_id,
-        amenities=amenities_objs
-    )   
-    self.place_repo.add(place)
-    return place
+        self.place_repo.save(place)
+        return place
 
 
     def get_place(self, place_id):
-        def get_place(self, place_id):
         place = self.place_repo.get(place_id)
         if not place:
             return None
@@ -131,7 +122,7 @@ class HBnBFacade:
 
     def get_all_places(self):
         places = self.place_repo.get_all()
-        return = [
+        return [
                 {
                     "id": place.id,
                     "title": place.title,
@@ -145,20 +136,28 @@ class HBnBFacade:
         place = self.place_repo.get(place_id)
         if not place:
             return None
+
+        # Validation du prix
         if "price" in place_data:
             price = place_data["price"]
-            if not isinstance(price(int, float) or price < 0:
-                    return None
+            if not isinstance(price, (int, float)) or price < 0:
+                return None
 
+    # Validation de la latitude
         if "latitude" in place_data:
             latitude = place_data["latitude"]
-            if not isinstance(latitude(int, float) or not (-90 <= latitude <= 90):
+            if not isinstance(latitude, (int, float)) or not (-90 <= latitude <= 90):
                 return None
 
+    # Validation de la longitude
         if "longitude" in place_data:
             longitude = place_data["longitude"]
-            if not isinstance(longitude(int, float) or not (-180 <= longitude <= 180):
+            if not isinstance(longitude, (int, float)) or not (-180 <= longitude <= 180):
                 return None
 
+    # Mise à jour des données
         self.place_repo.update(place_id, place_data)
+
+    # Retourne le nouvel état du lieu
         return self.place_repo.get(place_id)
+

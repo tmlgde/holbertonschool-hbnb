@@ -30,6 +30,9 @@ class InMemoryRepository(Repository):
     def __init__(self):
         self._storage = {}
 
+    def save(self, obj):
+        self.add(obj)
+
     def add(self, obj):
         self._storage[obj.id] = obj
 

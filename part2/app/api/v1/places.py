@@ -37,7 +37,7 @@ class PlaceList(Resource):
         place_data = api.payload
         try:
             new_place = facade.create_place(place_data)
-            return: {
+            return {
                     "id": new_place.id,
                 "title": new_place.title,
                 "description": new_place.description,
@@ -48,18 +48,13 @@ class PlaceList(Resource):
                 "amenities": [a.id for a in new_place.amenities],
                 }, 201
         except ValueError as e:
-            return {error: str(e)}, 400
+            return {"error": str(e)}, 400
 
     @api.response(200, 'List of places retrieved successfully')
     def get(self):
         """Retrieve a list of all places"""
-        places = facade.get_all_place()
-        return [{
-            "id": p.id,
-            "title": p.title,
-            "latitude": p.latitude,
-            "longitude": p.longitude
-        } for p in places], 200
+        places = facade.get_all_places()
+        return places, 200  
 
 @api.route('/<place_id>')
 class PlaceResource(Resource):
