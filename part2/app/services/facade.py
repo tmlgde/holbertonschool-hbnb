@@ -142,5 +142,23 @@ class HBnBFacade:
             ]
 
     def update_place(self, place_id, place_data):
-    # Placeholder for logic to update a place
-    pass
+        place = self.place_repo.get(place_id)
+        if not place:
+            return None
+        if "price" in place_data:
+            price = place_data["price"]
+            if not isinstance(price(int, float) or price < 0:
+                    return None
+
+        if "latitude" in place_data:
+            latitude = place_data["latitude"]
+            if not isinstance(latitude(int, float) or not (-90 <= latitude <= 90):
+                return None
+
+        if "longitude" in place_data:
+            longitude = place_data["longitude"]
+            if not isinstance(longitude(int, float) or not (-180 <= longitude <= 180):
+                return None
+
+        self.place_repo.update(place_id, place_data)
+        return self.place_repo.get(place_id)
