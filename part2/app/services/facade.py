@@ -3,7 +3,6 @@ from app.persistence.repository import InMemoryRepository
 from app.models.user import User
 from app.models.amenity import Amenity
 
-
 class HBnBFacade:
 
     def __init__(self):
@@ -12,25 +11,25 @@ class HBnBFacade:
         self.review_repo = InMemoryRepository()
         self.amenity_repo = InMemoryRepository()
 
-    # Placeholder method for creating a user
+    # Create a user
     def create_user(self, user_data):
         user = User(**user_data)
         self.user_repo.add(user)
         return user
-    # Placeholder method for fetching a place by ID
-    def get_place(self, place_id):
-        # Logic will be implemented in later tasks
-        pass
 
+    # Retrieve a user by ID
     def get_user(self, user_id):
         return self.user_repo.get(user_id)
 
+    # Retrieve a user by email
     def get_user_by_email(self, email):
         return self.user_repo.get_by_attribute('email', email)
-    
+
+    # Get all users
     def get_all_users(self):
         return self.user_repo.get_all()
-    
+
+    # Update a user
     def update_user(self, user_id, data):
         user = self.user_repo.get(user_id)
         if user is None:
@@ -40,21 +39,27 @@ class HBnBFacade:
                 setattr(user, key, value)
         return user
 
+    # Create an amenity
     def create_amenity(self, amenity_data):
         amenity = Amenity(**amenity_data)
         self.amenity_repo.add(amenity)
         return amenity
 
+    # Retrieve an amenity by ID
     def get_amenity(self, amenity_id):
-        self.amenity_repo
-        self.amenity_repo.get(amenity_id)
+        return self.amenity_repo.get(amenity_id)
 
+    # Retrieve all amenities
     def get_all_amenities(self):
         return self.amenity_repo.get_all()
-    
+
+    # Update an amenity
     def update_amenity(self, amenity_id, amenity_data):
-        self.amenity_repo.get(amenity_id)
+        amenity = self.amenity_repo.get(amenity_id)
         if amenity is None:
             return None
-        self.amnenity_repo.update(amenity_id, amenity_data)
+        for key, value in amenity_data.items():
+            if hasattr(amenity, key):
+                setattr(amenity, key, value)
         return amenity
+
