@@ -1,81 +1,50 @@
 from app.models.base_model import BaseModel
-from app.models.user import User
 
-class Place(BaseModel):
-    def __init__(self, title, description, price, latitude, longitude, owner):
+class User(BaseModel):
+    def __init__(self, first_name, last_name, email, is_admin=False):
         super().__init__()
-        self.title = title
-        self.description = description
-        self.price = price
-        self.latitude = latitude
-        self.longitude = longitude
-        self.owner = owner
-        self.reviews = []
-        self.amenities = []
+        self.first_name = first_name
+        self.last_name = last_name
+        self.email = email
+        self.is_admin = is_admin
 
     @property
-    def title(self):
-        return self.__title
+    def first_name(self):
+        return self.__first_name
 
-    @title.setter
-    def title(self, value):
-        if not value or not isinstance(value, str) or len(value) > 100:
-            raise ValueError("Title is required and must be a string with max 100 characters")
-        self.__title = value
-
-    @property
-    def description(self):
-        return self.__description
-
-    @description.setter
-    def description(self, value):
-        if value is not None and (not isinstance(value, str) or len(value) > 500):
-            raise ValueError("Description must be a string with max 500 characters")
-        self.__description = value
+    @first_name.setter
+    def first_name(self, value):
+        if not value or len(value) > 50:
+            raise ValueError("First name must be 50 characters max")
+        self.__first_name = value
 
     @property
-    def price(self):
-        return self.__price
+    def last_name(self):
+        return self.__last_name
 
-    @price.setter
-    def price(self, value):
-        if not isinstance(value, (int, float)) or value <= 0:
-            raise ValueError("Price must be a positive number")
-        self.__price = value
-
-    @property
-    def latitude(self):
-        return self.__latitude
-
-    @latitude.setter
-    def latitude(self, value):
-        if not isinstance(value, (int, float)) or not (-90.0 <= value <= 90.0):
-            raise ValueError("Latitude must be between -90.0 and 90.0")
-        self.__latitude = value
+    @last_name.setter
+    def last_name(self, value):
+        if not value or len(value) > 50:
+            raise ValueError("Last name must be 50 characters max")
+        self.__last_name = value
 
     @property
-    def longitude(self):
-        return self.__longitude
+    def email(self):
+        return self.__email
 
-    @longitude.setter
-    def longitude(self, value):
-        if not isinstance(value, (int, float)) or not (-180.0 <= value <= 180.0):
-            raise ValueError("Longitude must be between -180.0 and 180.0")
-        self.__longitude = value
+    @email.setter
+    def email(self, value):
+        if not value or "@" not in value:
+            raise ValueError("Invalid email")
+        self.__email = value
 
     @property
-    def owner(self):
-        return self.__owner
+    def is_admin(self):
+        return self.__is_admin
 
-    @owner.setter
-    def owner(self, value):
-        if not isinstance(value, User):
-            raise ValueError("Owner must be a User instance")
-        self.__owner = value
-
-    def add_review(self, review):
-        self.reviews.append(review)
-
-    def add_amenity(self, amenity):
-        self.amenities.append(amenity)
+    @is_admin.setter
+    def is_admin(self, value):
+        if not isinstance(value, bool):
+            raise ValueError("is_admin must be a boolean")
+        self.__is_admin = value
 
