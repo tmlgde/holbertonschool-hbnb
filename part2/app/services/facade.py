@@ -102,7 +102,32 @@ class HBnBFacade:
 
 
     def get_place(self, place_id):
-    
+        def get_place(self, place_id):
+        place = self.place_repo.get(place_id)
+        if not place:
+            return None
+
+        owner = place.owner
+
+        amenities = []
+        for amenity in place.amenities:
+            amenities.append({"id": amenity.id, "name": amenity.name})
+
+        return {
+            "id": place.id,
+            "title": place.title,
+            "description": place.description,
+            "price": place.price,
+            "latitude": place.latitude,
+            "longitude": place.longitude,
+            "owner": {
+                "id": owner.id,
+                "first_name": owner.first_name,
+                "last_name": owner.last_name,
+                "email": owner.email,
+            },
+            "amenities": amenities,
+        }
 
     def get_all_places(self):
     # Placeholder for logic to retrieve all places
