@@ -64,12 +64,45 @@ class HBnBFacade:
         return amenity
 
     def create_place(self, place_data):
-    # Placeholder for logic to create a place, including validation for price, latitude, and longitude
-    pass
+        owner_id = place_data.get("owner_id")
+        owner = self.user_repo.get(owner_id)
+        if not owner:
+            raise ValueError("Invalid owner_id: User not found")
+        price = place_data.get("price")
+        latitude = place_data.get("latitude")
+        longitude = place_data.get("longitude")
+        if latitude is None or not isinstance(latitude(int, float)) or not (-90 <= latitude >= 90):
+            raise ValueError("Latitude must be between -90 and 90")
+        if price is None or not isinstance(price(int, float)) or price < 0:
+            raise ValueError("Invalid price")
+        if longitude is None or not isinstance(longitude(int, float)) or note (-180 <= longitude >= 180):
+            raise ValueError("Longitude must be between -180 and 180")
+            amenity_ids = place_data.get("amenities")
+    if not isinstance(amenity_ids, list):
+        raise ValueError("Amenities must be a list of IDs")
+
+    amenities = []
+    for amenity_id in amenity_ids:
+        amenity = self.amenity_repo.get(amenity_id)
+        if amenity is None:
+            raise ValueError(f"Amenity with ID {amenity_id} not found")
+        amenities.append(amenity)
+
+    place = Place(
+        title=title,
+        description=description,
+        price=price,
+        latitude=latitude,
+        longitude=longitude,
+        owner_id=owner_id,
+        amenities=amenities_objs
+    )   
+    self.place_repo.add(place)
+    return place
+
 
     def get_place(self, place_id):
-    # Placeholder for logic to retrieve a place by ID, including associated owner and amenities
-    pass
+    
 
     def get_all_places(self):
     # Placeholder for logic to retrieve all places
