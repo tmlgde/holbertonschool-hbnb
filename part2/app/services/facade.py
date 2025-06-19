@@ -130,8 +130,16 @@ class HBnBFacade:
         }
 
     def get_all_places(self):
-    # Placeholder for logic to retrieve all places
-    pass
+        places = self.place_repo.get_all()
+        return = [
+                {
+                    "id": place.id,
+                    "title": place.title,
+                    "latitude": place.latitude,
+                    "longitude": place.longitude,
+                }
+                for place in places
+            ]
 
     def update_place(self, place_id, place_data):
     # Placeholder for logic to update a place
