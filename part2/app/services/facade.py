@@ -30,7 +30,7 @@ class HBnBFacade:
     def get_all_users(self):
         return self.user_repo.get_all()
     
-    def updated_user(self, user_id, data):
+    def update_user(self, user_id, data):
         user = self.user_repo.get(user_id)
         if user is None:
             return None
