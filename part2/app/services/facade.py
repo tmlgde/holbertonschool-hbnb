@@ -192,7 +192,7 @@ class HBnBFacade:
         reviews = self.reviews_repo.get_all()
         reviews_for_place = []
         for review in reviews:
-            if review.place_id = place_id:
+            if review.place_id == place_id:
                 reviews_for_place.append(review)
         return reviews_for_place
 
@@ -215,4 +215,3 @@ class HBnBFacade:
             return None
         self.review_repo.delete(review_id)
         return True
-
