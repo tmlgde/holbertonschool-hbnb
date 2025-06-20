@@ -161,3 +161,58 @@ class HBnBFacade:
     # Retourne le nouvel état du lieu
         return self.place_repo.get(place_id)
 
+    def create_review(self, review_data):
+        user = self.user_repo.get(review_data.get("user_id"))
+        if not user:
+            raise ValueError("User id not found")
+        place = self.place_repo.get(review_data.get("place_id"))
+        if not place:
+            raise ValueError("Place id not found")
+        rating = review_data.get("rating")
+        if rating is none or not(1 <= rating <= 5):
+            raise ValueError("Rating must be between 1 and 5")
+            review = Review(
+        text=review_data["text"],
+        rating=rating,
+        user_id=user.id,
+        place_id=place.id
+        )
+        review.user = user
+        review.place = place
+        self.review_repo.add(review)
+        return review
+
+    def get_review(self, review_id):
+        return self.review_repo.get(review_id)
+
+    def get_all_reviews(self):
+        return self.review_repo.get_all()
+
+    def get_reviews_by_place(self, place_id):
+        reviews = self.reviews_repo.get_all()
+        reviews_for_place = []
+        for review in reviews:
+            if review.place_id = place_id:
+                reviews_for_place.append(review)
+        return reviews_for_place
+
+    def update_review(self, review_id, review_data):
+        review = self.review_repo.get(review_id)
+        if not review:
+            return None
+        if "text" in review_data:
+            review.text = review_data["text"]
+        if "rating" in review_data:
+            review.rating = review_data["rating"]
+        if not (1 <= rating <= 5):
+            raise ValueError("Rating must be between 1 and 5")
+        review.rating = rating
+        return review
+
+    def delete_review(self, review_id):
+        review = self.review_repo.get(review_id)
+        if not review:
+            return None
+        self.review_repo.delete(review_id)
+        return True
+
